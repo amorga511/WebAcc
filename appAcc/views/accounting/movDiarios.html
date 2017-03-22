@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html ng-app="appMain">
+<head>
+<title></title>
+
+<link rel="stylesheet" href="../../css/bootstrap.min.css"/>
+<link rel="stylesheet" href="../../css/simple-sidebar.css"/>
+<link rel="stylesheet" href="../../css/css_main.css"/>
+
+</head>
+<body ng-controller="appControl1">
+
+<!-- Barra Superior -->
+<div class="col-xs-12 barra_sup_css" style="padding:5px;">
+    <span id="btn_menu" style="font-size:30px;float:left; padding:3px" class="glyphicon glyphicon-menu-hamburger"></span>
+    <!--<img src="img/menu.png" id="btn_menu" width="35px" height="35px" />-->
+    <div id="dvtitle" class="titleapp_c">-xxxXxx</div>
+    <span class="glyphicon glyphicon-log-out" style="margin:5px; float:right; color:#D8D8D8; font-size:1.6em" onclick="switchMenu(99, 'Sales Operation-BOC')"></span>
+</div>
+<!-- Fin Barra Superior -->
+
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav" style="margin-top:10px">
+            <!--<li class="sidebar-brand">
+                <a href="#" ng-click="switchMenu(1)">
+                        Title School
+                </a>
+            </li>-->
+            <li>
+                <a href="#" ng-click="switchMenu(1)">Home</a>
+            </li>
+            <li><a href="#" ng-click="" data-toggle="collapse" data-target="#sbm_account">Contabilidad</a>
+                <ul id="sbm_account" class="collapse">
+                <li>
+                    <a href="#" ng-click="switchMenu(2)">Movs. Diario</a>
+                </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" >Reportes</a>
+            </li>
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <div id="page-content-wrapper" style="padding:0px">
+        <!-- Div Contenido -->
+        <div class="container-fluid" style="padding:0px; background-color: #F2F2F2;">
+
+        	<!-- Div Inicio -->
+            <div class="container-fluid c_anime_div" ng-show="true" style="padding-top:60px;">
+                <ul class="nav nav-tabs">
+                    <li ng-class="{'active':cMovs}" ng-click="f_switchTab(1)">
+                        <a href="#">Movimientos</a>
+                    </li>
+                    <li ng-class="{'active':cConsPDA}" ng-click="f_switchTab(2)">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Consultas</a>
+                    </li>
+                </ul>  
+               
+            </div>
+            <div style="background-color:#FFF; padding:15px" ng-show='cMovs'>
+                <center><h3>Registro Movs. Diarios</h3></center><br />
+                <div class="row">
+                    <div class="col-sm-4" style="padding-right:3px">
+                        <span>Fecha</span><br/>
+                        <input type="date"  ng-model="vDate" placeholder="Date" class="form-control"/>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:15px">
+                    <div class="col-sm-2" style="padding-right:3px">
+                        <span>Cargo</span><br/>
+                        <select class="form-control" ng-model="vType">
+                            <option value="0">Debe</option>
+                            <option value="1">Haber</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2" style="padding-right:3px">
+                        <span>Cod. Cta.</span><br/>
+                        <div class="input-group">                            
+                            <input type="text" ng-model="vCod_cta" ng-keypress="pressEvent($event)" class="form-control" placeholder="Cta Id..">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" style="padding-right:3px">
+                        <span>Desc. Cta.</span><br/>
+                        <input type="text"  ng-model="vCta" placeholder="Cuenta" class="form-control" readonly/>
+                    </div>
+                    <div class="col-sm-3" style="padding-right:3px">
+                        <span>Monto</span><br/>
+                        <input type="number"  ng-model="vMonto" placeholder="L." class="form-control"/>
+                    </div>
+                    <div class="col-sm-2" style="padding-right:3px; padding-top:20px">
+                        <input type="button" value="Add" class="btn btn-info" ng-click="f_addctas()"/>
+                    </div>
+                </div>
+
+                <div class="panel panel-default" style="margin-top:20px">
+                    <div class="panel-heading">Cuentas</div>
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr><th width="50%">Cuenta</th>
+                                    <th>Debe</th>
+                                    <th>Haber</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="rctas in vArr_cuentas">
+                                    <td>{{rctas.cta_name}}</td>
+                                    <td align="right">{{rctas.debe}}</td>
+                                    <td align="right">{{rctas.haber}}</td>
+                                    <td><span class="glyphicon glyphicon-remove remove_cta" id="{{rctas.cod}}" ng-click="f_removeCta(event)"></span></td>
+                                </tr>
+                            <tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:15px">
+                    <div class="col-sm-6">
+                        <textarea class="form-control" ng-model="vComment" maxlength="60"></textarea>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:15px">
+                    <div class="col-sm-6">
+                        <input type="button" value="Guardar" class="btn btn-success" ng-click="f_savePDA()"/>
+                        <input type="button" value="Limpiar" class="btn btn-default" ng-click="f_clearRegs()"/>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="background-color:#FFF; padding:15px" ng-show='cConsPDA'>
+                <center><h3>Consulta Movs. Diarios</h3></center>
+                <br />
+                <div class="row">
+                    <div class="col-sm-4" style="padding-right:3px">
+                        <span>Fecha Inicio</span><br/>
+                        <input type="date"  ng-model="vDateIni" placeholder="Date" class="form-control"/>
+                    </div>
+                    <div class="col-sm-4" style="padding-right:3px">
+                        <span>Fecha Fin</span><br/>
+                        <input type="date"  ng-model="vDateFin" placeholder="Date" class="form-control"/>
+                    </div>
+                    <div class="col-sm-4" style="padding-right:3px">
+                        <input type="button" value="Buscar" class="btn btn-info" ng-click="f_buscar()" style="margin-top:20px" />
+                    </div>
+                </div>
+                <br />
+                <div class="content-fluid">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Num. Partida</th>
+                                <th>Fecha</th>
+                                <th>Monto</th>
+                                <th>Concepto</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="rpdas in arr_registros">
+                                <td align="center">{{rpdas.num}}</td>
+                                <td>{{rpdas.fecha}}</td>
+                                <td align="right">{{rpdas.monto}}</td>
+                                <td>{{rpdas.concept}}</td>
+                                <td><a href="#" ng-click="f_showModal()">View</a></td>
+                            </tr>
+                        <tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Fin Div Inicio -->
+        </div><!-- Fin Dvi Contenido -->      
+    </div>
+
+</div>
+<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+</div>
+<!-- end modal -->
+</body>
+
+<script type="text/javascript" src="../../js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script type="text/javascript" src="../../js/js_movsDiarios.js"></script>
+
+</html>

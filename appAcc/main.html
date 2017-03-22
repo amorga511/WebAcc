@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html ng-app="appMain">
+<head>
+<title></title>
+
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/simple-sidebar.css" />
+<link rel="stylesheet" href="css/css_main.css" />
+
+</head>
+<body ng-controller="appControl1">
+<!-- Barra Superior -->
+<div class="col-xs-12 barra_sup_css" style="padding:5px;">
+    <span id="btn_menu" style="font-size:30px;float:left; padding:3px" class="glyphicon glyphicon-menu-hamburger"></span>
+    <!--<img src="img/menu.png" id="btn_menu" width="35px" height="35px" />-->
+    <div id="dvtitle" class="titleapp_c">-xxxXxx</div>
+    <span class="glyphicon glyphicon-log-out" style="margin:5px; float:right; color:#D8D8D8; font-size:1.6em" onclick="switchMenu(99, 'Sales Operation-BOC')"></span>
+</div>
+<!-- Fin Barra Superior -->
+
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav" style="margin-top:10px">
+            <!--<li class="sidebar-brand">
+                <a href="#" ng-click="switchMenu(1)">
+                        Title School
+                </a>
+            </li>-->
+            <li>
+                <a href="#" ng-click="switchMenu(1)">Home</a>
+            </li>
+            <li><a href="#" ng-click="" data-toggle="collapse" data-target="#sbm_account">Contabilidad</a>
+                <ul id="sbm_account" class="collapse">
+                <li>
+                    <a href="#" ng-click="switchMenu(2)">Movs. Diario</a>
+                </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" >Reportes</a>
+            </li>
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <div id="page-content-wrapper" style="padding:0px">
+        <!-- Div Contenido -->
+        <div class="container-fluid" style="padding:0px;">
+        	
+            <!-- Div Inicio -->
+            <div class="container-fluid c_anime_div" ng-show="dvInicio" style="padding-top:60px;">
+
+               <!--<input type="text" id="txt1"/><br /><input type="button" value="decode" onclick="decode()" />-->
+               <div class="col-sm-2 menu_interactivo_div">
+                    <div class="col-sm-12 menu_interactivo">                  
+                        <center>
+                            <span style="font-family:'Georgia'; text-align:center">TITle</span><br>
+                            <img src="img/invoice.png" width="90%" />                          
+                        </center>
+                    </div>
+               </div>
+              
+               
+            </div>
+            <!-- Fin Div Inicio -->
+
+            <!-- Div Staff -->
+            <div class="container-fluid c_anime_div" ng-show="dvStaff" style="padding:0px; padding-top:50px;">
+               <label> Hello Staff </label>
+            </div>
+            <!-- Fin Div Staff -->
+
+                        <!-- Div Staff -->
+            <div class="container-fluid c_anime_div" ng-show="dvPersonalOp"  style="padding:0px; padding-top:50px;">
+               <label> Personal Options </label>
+            </div>
+            <!-- Fin Div Staff -->
+
+        </div><!-- Fin Dvi Contenido -->      
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<!--<script type="text/javascript" src="cordova.js"></script>-->
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script type="text/javascript" src="js/js_main.js"></script>
+<script type="text/javascript" src="js/js_numTostr.js"></script>
+<script type="text/javascript">
+
+function decode(){
+    var texto = document.getElementById('txt1').value;
+    alert('decoding..' + hex2a(texto));
+}
+
+function hex2a(hexx) {
+    var hex = hexx.toString();//force conversion
+    var str = '';
+    for (var i = 0; i < hex.length; i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    return str;
+}
+var appM = angular.module('appMain', []);
+
+appM.controller('appControl1', function($scope,$http) {
+    $scope.dvInicio = true;
+    $scope.dvStaff = false;
+
+    $scope.switchMenu = function(vM){
+        switch(vM){
+            case 1:
+                $scope.dvInicio = true;
+                $scope.dvStaff = false;
+                $scope.dvPersonalOp = false;
+            break;
+            case 2:
+                $scope.dvInicio = false;
+                $scope.dvStaff = true;
+                $scope.dvPersonalOp = false;
+                window.location = "views/accounting/movDiarios.html";
+            break;
+            case 99:
+                $scope.dvInicio = false;
+                $scope.dvStaff = false;
+                $scope.dvPersonalOp = true;
+            break;
+            default:
+                return;
+        }
+        if(vM!=99){
+            $("#wrapper").toggleClass("toggled");
+        }
+    }
+});
+
+
+$("#btn_menu").click(function(e) {
+     e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+});
+$("#btn_close_menu").click(function(){
+    $("#wrapper").toggleClass("toggled");
+ });
+
+//alert(getParams('user'));
+
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    console.log(device.cordova);  
+    cordova.plugins.backgroundMode.overrideBackButton();
+
+    cordova.plugins.backgroundMode.setEnabled(true);    
+    cordova.plugins.backgroundMode.configure({ text: 'Testing', resume:true });
+        
+    cordova.plugins.backgroundMode.on('activate',function(){
+        navigator.vibrate(800);
+    });
+}
+  
+/*cordova.plugins.backgroundMode.setDefaults({
+    title: 'Prueba',
+    text: 'Hello'
+    //icon: 'icon' // this will look for icon.png in platforms/android/res/drawable|mipmap
+    color: String // hex format like 'F14F4D'
+    resume: Boolean,
+    hidden: Boolean,
+    bigText: Boolean
+});*/ 
+
+function goback(){    
+    if(cordova.plugins.backgroundMode.isActive() == true){
+        navigator.vibrate(100);
+    }
+}
+
+function getParams(param) {
+    var vars = {};
+    window.location.href.replace( location.hash, '' ).replace( 
+        /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+        function( m, key, value ) { // callback
+            vars[key] = value !== undefined ? value : '';
+        }
+    );
+
+    if ( param ) {
+        return vars[param] ? vars[param] : null;    
+    }
+    return vars;
+}
+</script>
+
+</html>

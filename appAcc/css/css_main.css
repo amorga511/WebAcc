@@ -1,0 +1,75 @@
+/* Estilo Principal */
+
+.barra_sup_css{
+	background-color:#610B0B; /*; #585858;*/
+	height: 50px;
+	position: fixed;
+	z-index:10;
+	color:#D8D8D8;
+}
+
+#btn_menu:hover{
+	/*background-color: #2E2E2E;*/	
+	background: rgba(255,255,255,0.2);
+	cursor:pointer;
+}
+
+.titleapp_c{
+	float: left;
+	margin-left: 15px;
+	margin-top: 5px;
+	font-size: 1.3em;
+	font-family: georgia;
+}
+
+.c_anime_div{
+	animation-name: example;
+    animation-duration: 1s;
+}
+
+.menu_interactivo_div{
+	padding:8px; 
+}
+.menu_interactivo{
+	box-shadow: 1px 1px 5px;
+}
+
+.menu_interactivo:hover{
+	background-color: #E0ECF8;
+	cursor: pointer;
+}
+
+.remove_cta{
+	color:red;
+	padding:1px;
+}
+
+.remove_cta:hover{
+	background-color:#E0ECF8;
+	cursor:pointer;
+}
+
+/* enable absolute positioning */
+.inner-addon { 
+    position: relative; 
+}
+
+/* style icon */
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+
+/* align icon */
+.left-addon .glyphicon  { left:  0px;}
+.right-addon .glyphicon { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+
+@keyframes example {
+    from {opacity:0.2;}
+    to {opacity:1;}
+}

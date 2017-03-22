@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html ng-app="appMain">
+<head>
+<title></title>
+
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<style>
+/* enable absolute positioning */
+.inner-addon { 
+    position: relative; 
+}
+
+/* style icon */
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+
+/* align icon */
+.left-addon .glyphicon  { left:  0px;}
+.right-addon .glyphicon { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+
+</style>
+</head>
+<body style="background-color:#585858" ng-controller="controlMain">
+	<div class="col-xs-12" style="padding:0px; margin-top:50px;">
+		<center>
+			<img src="img/logo.png" width="90px" height="100px" />
+		</center>
+		<br />
+		<div class="col-xs-1" style="padding:0px"></div>
+		<div class="col-xs-10">
+			<div class="inner-addon left-addon" style="margin-bottom:6px">
+				<span class="glyphicon glyphicon-user" style="color:gray"></span>
+				<input type="text" id="user" ng-model="usuario" placeholder="Usuario" class="form-control"/>
+			</div>
+			<div class="inner-addon left-addon" style="margin-bottom:10px">
+				<span class="glyphicon glyphicon-lock" style="color:gray"></span>
+				<input type="password" id="pwd"  placeholder="Clave" class="form-control"/>
+			</div>
+			<center><input type="button" id="btn_login" value="LogIn" class="btn btn-success" ng-click="f_login()"/></center>
+			<br /><center><span>{{msj_err}} </span></center>
+		</div>
+		<table id="wcList">
+		  <tr>
+		    <th>Month</th>
+		    <th>Savings</th>
+		  </tr>
+		  <tr>
+		    <td>January</td>
+		    <td>$100</td>
+		  </tr>
+		</table>
+		
+	</div>
+</body>
+
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+});
+
+var password = 'pruebas'; 
+
+function login(){
+	var vUser = document.getElementById("user").value;
+	var vPwd = document.getElementById("pwd").value;
+	if(vUser.toUpperCase() == usuario.toUpperCase() && vPwd.toUpperCase()==password.toUpperCase()){
+		window.location.replace('main.html');
+	}else{
+		alert('Usuario o Clave Incorrecta !');
+	}
+
+}
+
+var appM = angular.module('appMain', []);
+
+appM.controller('controlMain', function($scope,$http) {
+
+    $scope.usuario = '';
+
+    $scope.f_login = function(){
+
+    	constructString();
+    	$http.post('http://iteshn.hol.es/server_app/svrConsultas.php', {user:$scope.usuario}).then(function(result){
+    		//alert(result.data);
+    		if(parseInt(result.data[0]) == 0){
+    			$scope.msj_err = 'Error de LogIn';
+    		}else{
+    			window.location.replace('main.html?user=' + $scope.usuario);
+    			$scope.msj_err = 'LogIn Correcto';
+    		}
+    	});
+    }
+});
+
+function constructString() {   
+	var table=document.getElementById('wcList');
+
+    for(var i=0; i<table.rows.length;i++){
+
+        //var row       = getElem(RowId + i);
+        var str_wc    = table.rows[i].cells[1].innerHTML;
+        //var str_act   = table.rows[i].cells[5].firstChild.value;
+        //var string1 = str_wc + str_act;
+        var string1 = i;
+        alert(str_wc);
+
+     }
+     
+}
+
+</script>
+</html>
