@@ -34,7 +34,10 @@
             <li><a href="#" ng-click="" data-toggle="collapse" data-target="#sbm_account">Contabilidad</a>
                 <ul id="sbm_account" class="collapse">
                 <li>
-                    <a href="#" ng-click="switchMenu(2)">Movs. Diario</a>
+                    <a href="#" ng-click="switchMenu(2)">Libro Diario</a>
+                </li>
+                <li>
+                    <a href="#" ng-click="switchMenu(3)">Libro Mayor</a>
                 </li>
                 </ul>
             </li>
@@ -61,7 +64,7 @@
                 </ul>  
                
             </div>
-            <div style="background-color:#FFF; padding:15px" ng-show='cMovs'>
+            <div style="background-color:#FFF; padding:20px;" ng-show='cMovs'>
                 <center><h3>Registro Movs. Diarios</h3></center><br />
                 <div class="row">
                     <div class="col-sm-4" style="padding-right:3px">
@@ -137,17 +140,17 @@
 
             </div>
 
-            <div style="background-color:#FFF; padding:15px" ng-show='cConsPDA'>
+            <div style="background-color:#FFF; padding:20px" ng-show='cConsPDA'>
                 <center><h3>Consulta Movs. Diarios</h3></center>
                 <br />
                 <div class="row">
                     <div class="col-sm-4" style="padding-right:3px">
                         <span>Fecha Inicio</span><br/>
-                        <input type="date"  ng-model="vDateIni" placeholder="Date" class="form-control"/>
+                        <input type="date"  ng-model="vBfini" placeholder="Date" class="form-control"/>
                     </div>
                     <div class="col-sm-4" style="padding-right:3px">
                         <span>Fecha Fin</span><br/>
-                        <input type="date"  ng-model="vDateFin" placeholder="Date" class="form-control"/>
+                        <input type="date"  ng-model="vBffin" placeholder="Date" class="form-control"/>
                     </div>
                     <div class="col-sm-4" style="padding-right:3px">
                         <input type="button" value="Buscar" class="btn btn-info" ng-click="f_buscar()" style="margin-top:20px" />
@@ -169,9 +172,9 @@
                             <tr ng-repeat="rpdas in arr_registros">
                                 <td align="center">{{rpdas.num}}</td>
                                 <td>{{rpdas.fecha}}</td>
-                                <td align="right">{{rpdas.monto}}</td>
+                                <td align="right"><span style="float:left">L.</span>{{rpdas.monto}}</td>
                                 <td>{{rpdas.concept}}</td>
-                                <td><a href="#" ng-click="f_showModal()">View</a></td>
+                                <td><a href="#" id="{{rpdas.num}}" ng-click="f_showModal($event)">View</a></td>
                             </tr>
                         <tbody>
                     </table>
@@ -189,9 +192,9 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title" id="titleMdl">Modal Header</h4>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="mdlBody">
           <p>Some text in the modal.</p>
         </div>
         <div class="modal-footer">

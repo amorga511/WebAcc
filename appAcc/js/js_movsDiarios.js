@@ -51,11 +51,13 @@ appM.controller('appControl1', function($scope,$http) {
     		break;
     	}
     	clearRegs();
+    	clearBusqueda();
     }
 
     $scope.f_buscar = function(){
-    	$http.post("../../server/svrConsultas.php", {op:2}).then(function(rData){
+    	$http.post("../../server/svrConsultas.php", {op:2, fechIni:$scope.vBfini, fechFin:$scope.vBffin}).then(function(rData){
     		//alert(rData.data);
+    		//alert(rData.data[0]["ctas"][0].id);
     		$scope.arr_registros = rData.data;
 		});
     }
@@ -130,8 +132,39 @@ appM.controller('appControl1', function($scope,$http) {
     	}
     }
 
-    $scope.f_showModal = function(){
-    	showModal();
+    $scope.f_showModal = function(vEv){
+    	//alert(vEv.target.id);
+    	var vPDA =vEv.target.id;
+    	var concepto = "";
+    	var htmlModal="";
+    	
+		for(i=0;i<$scope.arr_registros.length;i++){
+			if($scope.arr_registros[i].num == vPDA){
+				htmlModal +="<center><label>PDA# "+ $scope.arr_registros[i].num +"</label></center>";
+        		htmlModal +="<p>Fecha: "+ $scope.arr_registros[i].fecha +"</p>";
+				htmlModal +="<table class=\"table table-striped\">";
+				htmlModal +="<thead>";
+				htmlModal +="<tr><th width=\"50%\">Cuenta</th>";
+				htmlModal +="<th>Debe</th>";
+				htmlModal +="<th>Haber</th>";
+				htmlModal +="</tr>";
+				htmlModal +="</thead>";
+				htmlModal +="<tbody>";
+				htmlModal +="<tr>";
+				for(j=0;j<$scope.arr_registros[i].ctas.length;j++){
+					htmlModal +="<tr>";
+					htmlModal +="<td>"+ $scope.arr_registros[i].ctas[j].name +"</td>";
+					htmlModal +="<td align=\"right\"><span style=\"float:left\">L.</span>" + $scope.arr_registros[i].ctas[j].debit +"</td>";
+					htmlModal +="<td align=\"right\"><span style=\"float:left\">L.</span>"+ $scope.arr_registros[i].ctas[j].credit +"</td>";
+					htmlModal +="</tr>";
+				}
+				concepto = $scope.arr_registros[i].concept;
+				htmlModal +="<tbody>";
+				htmlModal +="</table>";
+				htmlModal +="<span><b>Concepto: </b></span><br /><span style=\"padding-left:20px;\">"+ concepto +"</span>";
+			}
+		}		
+    	showModal(htmlModal, 'PDA Detalle');
     }
 
     $scope.pressEvent = function(vEvent){
@@ -148,7 +181,9 @@ appM.controller('appControl1', function($scope,$http) {
     	}
     }
 
-    function showModal(){
+    function showModal(vBody, vTitle){
+    	$("#mdlBody").html(vBody);
+    	$("#titleMdl").html(vTitle);
     	$("#myModal").modal("show");
     }
 
@@ -178,6 +213,12 @@ appM.controller('appControl1', function($scope,$http) {
     	$scope.vType = "0";
     	$scope.vCta = "";
     	$scope.vMonto = 0;
+    }
+
+    function clearBusqueda(){
+    	$scope.vBfini = new Date;
+    	$scope.vBffin = new Date;
+    	$scope.arr_registros = [];
     }
 
     clearRegs();
